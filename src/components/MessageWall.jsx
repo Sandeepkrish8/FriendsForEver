@@ -5,15 +5,15 @@ const STORAGE_KEY = 'ff-messages'
 const EMOJIS = ['🤍', '✨', '🔥', '😂', '🥹', '💫', '🌙', '⚡']
 
 const SEED = [
-  { id: 1, name: 'Diya ☀️',    emoji: '🥹', date: 'May 19, 2024',
+  { id: 1, name: 'Saran ☀️',    emoji: '🥹', date: 'May 19, 2026',
     text: "This site made me cry actual tears. I love you guys so much. Forever means forever." },
-  { id: 2, name: 'Karthik 🍕', emoji: '❤️', date: 'May 19, 2024',
+  { id: 2, name: 'Aswin 🍕', emoji: '❤️', date: 'May 19, 2026',
     text: "OK I was NOT ready for this. Someone is cutting onions. P.S. come over and I'll cook to celebrate." },
-  { id: 3, name: 'Rohan ⚡',   emoji: '🔥', date: 'May 20, 2024',
+  { id: 3, name: 'Jagan ⚡',   emoji: '🔥', date: 'May 20, 2026',
     text: "This slaps harder than every spontaneous plan I ever made. Which is saying a lot." },
-  { id: 4, name: 'Priya 🌙',   emoji: '🌙', date: 'May 20, 2024',
+  { id: 4, name: 'Nishanth 🌙',   emoji: '🌙', date: 'May 20, 2026',
     text: "Every memory is worth keeping — and this page keeps them all beautifully. So proud of us." },
-  { id: 5, name: 'Aarav 🧠',   emoji: '✨', date: 'May 21, 2024',
+  { id: 5, name: 'Sandeep 🧠',   emoji: '✨', date: 'May 21, 2026',
     text: "I had this planned for a while. Finally shipped it. Worth every single 2AM session." },
 ]
 
