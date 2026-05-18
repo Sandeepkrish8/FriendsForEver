@@ -54,7 +54,7 @@ export const friends = [
     role: "3AM talks specialist",
     zodiac: "Pisces",
     funFact: "Has read more books than most libraries own.",
-    birthday: "03-05",   // March 5
+    birthday: "06-24",   // June 24
   },
   {
     id: 5,
@@ -68,7 +68,7 @@ export const friends = [
     role: "Unofficial group caterer",
     zodiac: "Taurus",
     funFact: "Once drove 2 hours for a specific biryani.",
-    birthday: "05-03",   // May 3
+    birthday: "04-10",   // April 10
   },
 ]
 
