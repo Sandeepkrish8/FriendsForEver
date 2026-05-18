@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, useMotionValue, useSpring, AnimatePresence } from 'framer-motion'
 import { friends } from '../data/data'
 
@@ -13,7 +13,14 @@ const ITEMS = [
 
 export default function Diorama3DRoom() {
   const [active, setActive] = useState(null)
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 768)
   const containerRef = useRef(null)
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth <= 768)
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
 
   // Mouse tilt
   const mx = useMotionValue(0)
@@ -24,12 +31,71 @@ export default function Diorama3DRoom() {
   const onMouseMove = (e) => {
     if (!containerRef.current) return
     const r = containerRef.current.getBoundingClientRect()
-    const nx = (e.clientX - r.left) / r.width  - 0.5   // -0.5 to 0.5
+    const nx = (e.clientX - r.left) / r.width  - 0.5
     const ny = (e.clientY - r.top)  / r.height - 0.5
-    mx.set(nx *  12)   // ±6 deg
+    mx.set(nx *  12)
     my.set(ny * -10)
   }
   const onMouseLeave = () => { mx.set(0); my.set(0) }
+
+  /* ─── Mobile: simple tappable card grid ─────────────────── */
+  if (isMobile) {
+    return (
+      <section id="room" style={{ padding: '72px 16px', position: 'relative', zIndex: 1 }}>
+        <div style={{ maxWidth: 480, margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: 40 }}>
+            <div style={{ fontSize: 11, letterSpacing: 5, color: '#E8A87C', textTransform: 'uppercase', marginBottom: 14 }}>
+              The Hangout Spot
+            </div>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(30px, 9vw, 48px)', fontWeight: 700 }}>
+              Our Room
+            </h2>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            {ITEMS.map((item, i) => {
+              const f = friends[item.fi]
+              return (
+                <motion.div
+                  key={i}
+                  whileTap={{ scale: 0.96 }}
+                  onClick={() => setActive(active === i ? null : i)}
+                  style={{
+                    background: `linear-gradient(135deg, ${f.color}18, rgba(10,8,6,0.9))`,
+                    border: `1px solid ${f.color}35`,
+                    borderRadius: 16, padding: '20px 16px',
+                    cursor: 'pointer', textAlign: 'center',
+                    position: 'relative',
+                  }}
+                >
+                  <div style={{ fontSize: 36, marginBottom: 10 }}>{item.emoji}</div>
+                  <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 13, fontWeight: 700, marginBottom: 4 }}>
+                    {item.label}
+                  </div>
+                  <div style={{ fontSize: 10, color: f.color, letterSpacing: 1.2, fontWeight: 700 }}>
+                    {f.name.split(' ')[0].toUpperCase()}
+                  </div>
+                  <AnimatePresence>
+                    {active === i && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        style={{ overflow: 'hidden', marginTop: 8 }}
+                      >
+                        <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.55)', lineHeight: 1.5 }}>
+                          {item.desc}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section id="room" style={{ padding: '110px 24px', position: 'relative', zIndex: 1 }}>

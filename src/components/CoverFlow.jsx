@@ -1,29 +1,54 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { memories } from '../data/data'
 
 export default function CoverFlow() {
   const [active, setActive]       = useState(0)
   const [lightbox, setLightbox]   = useState(null)
+  const [winW, setWinW]           = useState(() => window.innerWidth)
   const count = memories.length
+
+  useEffect(() => {
+    const onResize = () => setWinW(window.innerWidth)
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+
+  // Responsive card dimensions
+  const isMobile = winW <= 480
+  const isTablet = winW <= 768
+  const cardW    = isMobile ? 160 : isTablet ? 200 : 246
+  const cardH    = isMobile ? 214 : isTablet ? 268 : 330
+  const xStep    = isMobile ? 110 : isTablet ? 150 : 195
+  const zStep    = isMobile ? 60  : isTablet ? 75  : 95
+  const stageH   = isMobile ? 240 : isTablet ? 300 : 380
 
   // Compute the visual style for card at index i relative to active
   const layout = (i) => {
     const off = i - active
     const abs = Math.abs(off)
-    if (abs > 3) return null   // too far, skip rendering
+    if (abs > 3) return null
     return {
-      rotateY:    off * 42,
-      x:          off * 195,
-      z:          -abs * 95,
-      scale:      off === 0 ? 1 : Math.max(0.62, 1 - abs * 0.14),
-      opacity:    off === 0 ? 1 : Math.max(0.35, 1 - abs * 0.22),
-      zIndex:     10 - abs,
+      rotateY: off * 42,
+      x:       off * xStep,
+      z:       -abs * zStep,
+      scale:   off === 0 ? 1 : Math.max(0.62, 1 - abs * 0.14),
+      opacity: off === 0 ? 1 : Math.max(0.35, 1 - abs * 0.22),
+      zIndex:  10 - abs,
     }
   }
 
   const prev = () => setActive(a => Math.max(0, a - 1))
   const next = () => setActive(a => Math.min(count - 1, a + 1))
+
+  // Touch swipe
+  const touchX = { start: 0 }
+  const onTouchStart = (e) => { touchX.start = e.touches[0].clientX }
+  const onTouchEnd   = (e) => {
+    const dx = e.changedTouches[0].clientX - touchX.start
+    if (dx > 40) prev()
+    else if (dx < -40) next()
+  }
 
   // Keyboard nav
   const onKey = (e) => {
@@ -47,15 +72,18 @@ export default function CoverFlow() {
           Flip Through Us
         </h2>
         <p style={{ color: 'rgba(255,255,255,0.45)', marginTop: 12, fontSize: 15 }}>
-          Click a side card to bring it forward &nbsp;·&nbsp; Click center to enlarge
+          {isMobile ? 'Swipe left or right' : 'Click a side card to bring it forward'} &nbsp;·&nbsp; Click center to enlarge
         </p>
       </div>
 
       {/* 3D Stage */}
       <div
+        className="coverflow-stage"
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
         style={{
           perspective: 1400,
-          height: 380,
+          height: stageH,
           position: 'relative',
           display: 'flex',
           alignItems: 'center',
@@ -74,8 +102,8 @@ export default function CoverFlow() {
               transition={{ type: 'spring', stiffness: 88, damping: 20 }}
               style={{
                 position: 'absolute',
-                width: 246,
-                height: 330,
+                width: cardW,
+                height: cardH,
                 borderRadius: 18,
                 overflow: 'hidden',
                 zIndex: s.zIndex,

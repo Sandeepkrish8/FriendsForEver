@@ -253,11 +253,14 @@ export default function BirthdayCountdown() {
         </div>
 
         {/* Cards */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-          gap: 22,
-        }}>
+        <div
+          className="birthday-grid"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+            gap: 22,
+          }}
+        >
           {sorted.map((f, i) => (
             <BirthdayCard
               key={f.id}

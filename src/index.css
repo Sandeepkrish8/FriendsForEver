@@ -111,18 +111,86 @@ body {
   html, body, * { cursor: none !important; }
 }
 
-/* ─── Mobile ─────────────────────────────────────────── */
+/* ─── Tablet (≤ 768px) ───────────────────────────────── */
 @media (max-width: 768px) {
+  /* General section padding */
+  section {
+    padding-top:    72px !important;
+    padding-bottom: 72px !important;
+    padding-left:   16px !important;
+    padding-right:  16px !important;
+  }
+
+  /* Hero */
   .orbit-avatar { animation-name: orbit-sm; }
-  .orbit-ring   { width: 280px !important; height: 280px !important; }
-  .hero-title   { font-size: clamp(40px, 12vw, 72px) !important; }
-  .squad-grid   { grid-template-columns: 1fr 1fr !important; }
-  .memories-masonry { columns: 2 120px !important; }
-  .timeline-card { width: 80% !important; }
+  .orbit-ring   { width: 260px !important; height: 260px !important; }
+  .hero-title   { font-size: clamp(36px, 11vw, 64px) !important; }
+  .hero-stat    { min-width: 70px !important; }
+  .hero-stat > div:first-child { font-size: 28px !important; }
+
+  /* Squad */
+  .squad-grid { grid-template-columns: 1fr 1fr !important; gap: 14px !important; }
+  #squad { max-width: 100% !important; }
+
+  /* Memories masonry */
+  .memories-masonry { columns: 2 100px !important; gap: 10px !important; }
+
+  /* Timeline: collapse to single column */
+  .tl-item { justify-content: center !important; }
+  .tl-item > div:last-child {
+    width: 80% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  /* Quiz */
   .quiz-options { grid-template-columns: 1fr !important; }
+
+  /* Birthday countdown */
+  .birthday-grid { grid-template-columns: 1fr 1fr !important; }
+
+  /* Vibe tags */
+  .vibe-grid { gap: 8px !important; }
+
+  /* CoverFlow stage */
+  .coverflow-stage { height: 280px !important; }
+
+  /* Polaroid board */
+  .polaroid-board { padding: 28px 16px 24px !important; }
 }
 
+/* ─── Mobile (≤ 480px) ───────────────────────────────── */
 @media (max-width: 480px) {
-  .squad-grid   { grid-template-columns: 1fr !important; }
+  /* Squad: single column */
+  .squad-grid { grid-template-columns: 1fr !important; }
+
+  /* Memories: single column */
   .memories-masonry { columns: 1 !important; }
+
+  /* Hero orbit: hide on tiny screens */
+  .orbit-ring { display: none !important; }
+
+  /* Hero stats: smaller */
+  .hero-stat > div:first-child { font-size: 24px !important; }
+
+  /* Timeline */
+  .tl-item > div:last-child { width: 92% !important; }
+
+  /* Birthday grid */
+  .birthday-grid { grid-template-columns: 1fr !important; }
+
+  /* CoverFlow stage */
+  .coverflow-stage { height: 240px !important; }
+
+  /* Polaroid board */
+  .polaroid-board { padding: 20px 10px !important; gap: 14px !important; }
+}
+
+/* ─── Touch devices: restore cursor ──────────────────── */
+@media (pointer: coarse) {
+  html, body, * { cursor: auto !important; }
+}
+/* ─── Fine pointer: hide cursor for custom cursor ──── */
+@media (pointer: fine) {
+  html, body, * { cursor: none !important; }
 }
